@@ -1,0 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Poppins, sans-serif;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 16px 16px 0;
+  overscroll-behavior: contain;
+  transform: translateX(-50%);
+}
+header .navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+  padding: 16px 32px;
+  overflow: visible;
+  width: 100%;
+  height: 72px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+  background: linear-gradient(137deg, rgba(17, 18, 20, 0.75) 4.87%, rgba(12, 13, 15, 0.9) 75.88%);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+
+main {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 5em;
+  padding-top: 7em;
+}
+@media (max-width: 768px) {
+  main {
+    padding: 0 3em;
+    padding-top: 7em;
+  }
+}
+@media (max-width: 480px) {
+  main {
+    padding: 0 1em;
+    padding-top: 7em;
+  }
+}
+
+sl-card {
+  margin-bottom: 2em;
+  width: 100%;
+}
+sl-card div[slot=footer] {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+sl-card div[slot=footer] #id {
+  color: var(--sl-color-neutral-700);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

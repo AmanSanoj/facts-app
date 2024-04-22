@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Facts App</title>
+    <script
+      defer
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      media="(prefers-color-scheme:light)"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css"
+    />
+    <link
+      rel="stylesheet"
+      media="(prefers-color-scheme:dark)"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/dark.css"
+      onload="document.documentElement.classList.add('sl-theme-dark');"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="navbar">
+        <a href="/"> Facts App </a>
+        <sl-button id="cta" pill href="/favorites">Favorites</sl-button>
+      </div>
+    </header>
+    <main>
+      <sl-card>
+        <h2 id="text"></h2>
+        <div slot="footer">
+          <p style="display: none" id="id"></p>
+          <sl-button onclick="addToFavorites()"
+            ><sl-icon name="suit-heart" id="favorite-icon"></sl-icon
+          ></sl-button>
+        </div>
+      </sl-card>
+      <sl-button pill onclick="getFact()"
+        >New fact <sl-icon name="arrow-repeat"></sl-icon
+      ></sl-button>
+    </main>
+    <script>
+      const text = document.getElementById("text");
+      const id = document.getElementById("id");
+      const icon = document.getElementById("favorite-icon");
+
+      if (!localStorage.favorites)
+        localStorage.setItem("favorites", JSON.stringify({}));
+
+      const favorites = JSON.parse(localStorage.getItem("favorites"));
+
+      async function getFact() {
+        const factJSON = await fetch(
+          "https://uselessfacts.jsph.pl/api/v2/facts/random?lang=en"
+        );
+        const { id: ID, text: TEXT } = await factJSON.json();
+        text.innerHTML = TEXT;
+        id.innerHTML = ID;
+        icon.setAttribute("name", "suit-heart");
+      }
+
+      function countObjectKeys(obj) {
+        return Object.keys(obj).length;
+      }
+
+      function addToFavorites() {
+        const numberOfFavorites = countObjectKeys(favorites);
+        for (let i = 0; i < numberOfFavorites; i++) {
+          if (id.innerHTML === favorites[i]) return;
+        }
+        favorites[numberOfFavorites] = id.innerHTML;
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+        icon.setAttribute("name", "suit-heart-fill");
+      }
+
+      getFact();
+    </script>
+  </body>
+</html>

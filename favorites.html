@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Facts App</title>
+    <script
+      defer
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      media="(prefers-color-scheme:light)"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css"
+    />
+    <link
+      rel="stylesheet"
+      media="(prefers-color-scheme:dark)"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/dark.css"
+      onload="document.documentElement.classList.add('sl-theme-dark');"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="navbar">
+        <a href="/"> Facts App </a>
+        <sl-button id="cta" pill href="/">Home</sl-button>
+      </div>
+    </header>
+    <main id="main"></main>
+    <script>
+      if (!localStorage.favorites)
+        localStorage.setItem("favorites", JSON.stringify({}));
+      const main = document.getElementById("main");
+      const favorites = JSON.parse(localStorage.getItem("favorites"));
+
+      function countObjectKeys(obj) {
+        return Object.keys(obj).length;
+      }
+
+      const numberOfFavorites = countObjectKeys(favorites);
+
+      async function getFavorites() {
+        for (let i = 0; i < numberOfFavorites; i++) {
+          const factJSON = await fetch(
+            "https://uselessfacts.jsph.pl/api/v2/facts/" + favorites[i]
+          );
+          const { id, text } = await factJSON.json();
+          main.innerHTML =
+            main.innerHTML +
+            `<sl-card><h2 id="text">${text}</h2><div slot="footer"><p id="id">${id}</p></div></sl-card>`;
+        }
+      }
+
+      getFavorites();
+    </script>
+  </body>
+</html>
