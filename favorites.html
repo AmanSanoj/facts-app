@@ -23,10 +23,10 @@
         <sl-button id="cta" pill href="/">Home</sl-button>
       </div>
     </header>
-    <main id="main"></main>
+    <main id="main" style="flex-direction: column-reverse"></main>
     <script>
       if (!localStorage.favorites)
-        localStorage.setItem("favorites", JSON.stringify({}));
+        localStorage.setItem("favorites", JSON.stringify([]));
       const main = document.getElementById("main");
       const favorites = JSON.parse(localStorage.getItem("favorites"));
 
@@ -36,16 +36,28 @@
 
       const numberOfFavorites = countObjectKeys(favorites);
 
-      async function getFavorites() {
+      function getFavorites() {
         for (let i = 0; i < numberOfFavorites; i++) {
-          const factJSON = await fetch(
-            "https://uselessfacts.jsph.pl/api/v2/facts/" + favorites[i]
-          );
-          const { id, text } = await factJSON.json();
+          const fact = favorites[i];
           main.innerHTML =
             main.innerHTML +
-            `<sl-card><h2 id="text">${text}</h2><div slot="footer"><p id="id">${id}</p></div></sl-card>`;
+            `<sl-card>
+              <h2 id="text">${fact}</h2>
+              <div slot="footer">
+                <sl-button onclick="removeFromFavorites(${i})">
+                  <sl-icon name="suit-heart-fill"></sl-icon>
+                </sl-button>
+              </div>
+            </sl-card>`;
         }
+      }
+
+      function removeFromFavorites(id) {
+        localStorage.setItem(
+          "favorites",
+          JSON.stringify(favorites.slice(0, id).concat(favorites.slice(id + 1)))
+        );
+        location.href = location.href;
       }
 
       getFavorites();

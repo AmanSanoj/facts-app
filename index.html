@@ -42,8 +42,7 @@
       const id = document.getElementById("id");
       const icon = document.getElementById("favorite-icon");
 
-      if (!localStorage.favorites)
-        localStorage.setItem("favorites", JSON.stringify({}));
+      if (!localStorage.favorites) localStorage.setItem("favorites", "[]");
 
       const favorites = JSON.parse(localStorage.getItem("favorites"));
 
@@ -62,11 +61,10 @@
       }
 
       function addToFavorites() {
-        const numberOfFavorites = countObjectKeys(favorites);
-        for (let i = 0; i < numberOfFavorites; i++) {
-          if (id.innerHTML === favorites[i]) return;
+        for (let i = 0; i < favorites.length; i++) {
+          if (text.innerHTML === favorites[i]) return;
         }
-        favorites[numberOfFavorites] = id.innerHTML;
+        favorites.push(text.innerHTML);
         localStorage.setItem("favorites", JSON.stringify(favorites));
         icon.setAttribute("name", "suit-heart-fill");
       }
