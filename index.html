@@ -43,6 +43,8 @@
       const icon = document.getElementById("favorite-icon");
 
       if (!localStorage.favorites) localStorage.setItem("favorites", "[]");
+      if (Array.from(localStorage.favorites)[0] === "{")
+        localStorage.setItem("favorites", "[]");
 
       const favorites = JSON.parse(localStorage.getItem("favorites"));
 
@@ -54,10 +56,6 @@
         text.innerHTML = TEXT;
         id.innerHTML = ID;
         icon.setAttribute("name", "suit-heart");
-      }
-
-      function countObjectKeys(obj) {
-        return Object.keys(obj).length;
       }
 
       function addToFavorites() {

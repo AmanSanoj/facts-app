@@ -25,19 +25,15 @@
     </header>
     <main id="main" style="flex-direction: column-reverse"></main>
     <script>
-      if (!localStorage.favorites)
-        localStorage.setItem("favorites", JSON.stringify([]));
+      if (!localStorage.favorites) localStorage.setItem("favorites", "[]");
+      if (Array.from(localStorage.favorites)[0] === "{")
+        localStorage.setItem("favorites", "[]");
+
       const main = document.getElementById("main");
       const favorites = JSON.parse(localStorage.getItem("favorites"));
 
-      function countObjectKeys(obj) {
-        return Object.keys(obj).length;
-      }
-
-      const numberOfFavorites = countObjectKeys(favorites);
-
       function getFavorites() {
-        for (let i = 0; i < numberOfFavorites; i++) {
+        for (let i = 0; i < favorites.length; i++) {
           const fact = favorites[i];
           main.innerHTML =
             main.innerHTML +
